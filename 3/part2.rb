@@ -110,8 +110,11 @@ class Schematic
                 end
             end
         end
-
-        @gears.select{ |gear| gear.adjacent_numbers.length == 2 }.each do |gear|
+        @gears.each do |gear|
+            gear.adjacent_numbers_uniq
+        end
+        list_of_2 = @gears.select{ |gear| gear.adjacent_numbers.length == 2 }
+        list_of_2.each do |gear|
             puts gear.adjacent_numbers.map(&:digit).join(' * ')
             gear_ratio = gear.adjacent_numbers[0].digit.to_i * gear.adjacent_numbers[1].digit.to_i
             puts "gear ratio: #{gear_ratio}"
@@ -178,6 +181,10 @@ class Gear < Schematic
         @row = row
         @col = col
         @adjacent_numbers = []
+    end
+
+    def adjacent_numbers_uniq
+        @adjacent_numbers = [@adjacent_numbers.uniq!].flatten!
     end
 
     def adjacent_coordinates
